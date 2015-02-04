@@ -40,7 +40,7 @@ class Curly::TemplateHandler
 
     private
 
-    def compile(template)
+    def compile(template, mode = :curly)
       # Template is empty, so there's no need to initialize a presenter.
       return %("") if template.source.empty?
 
@@ -49,7 +49,7 @@ class Curly::TemplateHandler
 
       raise Curly::PresenterNotFound.new(path) if presenter_class.nil?
 
-      source = Curly.compile(template.source, presenter_class)
+      source = Curly.compile(template.source, presenter_class, mode)
 
       <<-RUBY
       if local_assigns.empty?

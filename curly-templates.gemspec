@@ -45,6 +45,7 @@ Gem::Specification.new do |s|
     lib/curly/dependency_tracker.rb
     lib/curly/error.rb
     lib/curly/hbs_parser.rb
+    lib/curly/hbs_template_handler.rb
     lib/curly/incomplete_block_error.rb
     lib/curly/incorrect_ending_error.rb
     lib/curly/invalid_component.rb

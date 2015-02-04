@@ -23,13 +23,15 @@ module Curly
     #   correct order - the most recent block must be ended first.
     # Raises IncompleteBlockError if a block is not completed.
     # Returns a String containing the Ruby code.
-    def self.compile(template, presenter_class)
+    def self.compile(template, presenter_class, mode = :curly)
+      @mode = mode
+
       if presenter_class.nil?
         raise ArgumentError, "presenter class cannot be nil"
       end
 
-      tokens = Scanner.scan(template)
-      nodes = Parser.parse(tokens)
+      tokens = scanner_class.scan(template)
+      nodes = parser_class.parse(tokens)
 
       compiler = new(presenter_class)
       compiler.compile(nodes)
@@ -74,6 +76,14 @@ module Curly
     end
 
     private
+
+    def self.scanner_class
+      @mode == :hbs ? Lexer : Scanner
+    end
+
+    def self.parser_class
+      @mode == :hbs ? HbsParser : Parser
+    end
 
     def presenter_class
       @presenter_classes.last

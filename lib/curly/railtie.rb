@@ -15,5 +15,19 @@ module Curly
         ActionView::DependencyTracker.register_tracker :curly, Curly::DependencyTracker
       end
     end
+
+    config.app_generators.template_engine :hbs
+
+    initializer 'hbs.initialize_template_handler' do
+      ActionView::Template.register_template_handler :hbs, Curly::HbsTemplateHandler
+
+      if defined?(CacheDigests::DependencyTracker)
+        CacheDigests::DependencyTracker.register_tracker :hbs, Curly::DependencyTracker
+      end
+
+      if defined?(ActionView::DependencyTracker)
+        ActionView::DependencyTracker.register_tracker :hbs, Curly::DependencyTracker
+      end
+    end
   end
 end

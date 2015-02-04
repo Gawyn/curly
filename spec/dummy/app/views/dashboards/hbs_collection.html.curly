@@ -1,0 +1,12 @@
+<ul>
+{{#each items}}
+  <li>{{item}}</li>
+  <ul>
+    {{#each subitems}}<li>{{name}}</li>{{/each}}
+  </ul>
+{{/each}}
+</ul>
+{{#each empty_objects}}
+{{else}}
+foo
+{{/each}}
