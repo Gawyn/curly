@@ -50,6 +50,7 @@ end
 
 require 'curly/compiler'
 require 'curly/template_handler'
+require 'curly/hbs_parser'
 require 'curly/lexer'
 require 'curly/presenter'
 require 'curly/railtie' if defined?(Rails)
