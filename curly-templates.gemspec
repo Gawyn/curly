@@ -75,6 +75,10 @@ Gem::Specification.new do |s|
     spec/dummy/app/controllers/dashboards_controller.rb
     spec/dummy/app/helpers/application_helper.rb
     spec/dummy/app/presenters/dashboards/collection_presenter.rb
+    spec/dummy/app/presenters/dashboards/conditionals_presenter.rb
+    spec/dummy/app/presenters/dashboards/empty_object_presenter.rb
+    spec/dummy/app/presenters/dashboards/hbs_collection_presenter.rb
+    spec/dummy/app/presenters/dashboards/hbs_conditionals_presenter.rb
     spec/dummy/app/presenters/dashboards/item_presenter.rb
     spec/dummy/app/presenters/dashboards/new_presenter.rb
     spec/dummy/app/presenters/dashboards/partials_presenter.rb
@@ -82,6 +86,9 @@ Gem::Specification.new do |s|
     spec/dummy/app/presenters/layouts/application_presenter.rb
     spec/dummy/app/views/dashboards/_item.html.curly
     spec/dummy/app/views/dashboards/collection.html.curly
+    spec/dummy/app/views/dashboards/conditionals.html.curly
+    spec/dummy/app/views/dashboards/hbs_collection.html.curly
+    spec/dummy/app/views/dashboards/hbs_conditionals.html.curly
     spec/dummy/app/views/dashboards/new.html.curly
     spec/dummy/app/views/dashboards/partials.html.curly
     spec/dummy/app/views/dashboards/show.html.curly
@@ -93,10 +100,15 @@ Gem::Specification.new do |s|
     spec/dummy/config/environments/test.rb
     spec/dummy/config/routes.rb
     spec/generators/controller_generator_spec.rb
+    spec/hbs_parser_spec.rb
     spec/integration/application_layout_spec.rb
     spec/integration/collection_blocks_spec.rb
+    spec/integration/conditionals_spec.rb
+    spec/integration/hbs_collection_blocks_spec.rb
+    spec/integration/hbs_conditionals_spec.rb
     spec/integration/context_blocks_spec.rb
     spec/integration/partials_spec.rb
+    spec/lexer_spec.rb
     spec/matchers/have_structure.rb
     spec/parser_spec.rb
     spec/presenter_spec.rb
