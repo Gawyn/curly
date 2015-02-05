@@ -44,6 +44,8 @@ module Curly
 
       clause('col_bl_start template col_bl_end') { |e0, e1, _| Block.new(:collection, e0, e1) }
       clause('col_bl_start template else template col_bl_end') { |e0, e1, _, e2, _| Block.new(:collection, e0, e1, e2) }
+
+      clause('context_bl_start template context_bl_end') { |e0, e1, _| Block.new(:context, e0, e1) }
     end
 
     production(:cond_bl_start) do
@@ -68,6 +70,14 @@ module Curly
 
     production(:col_bl_end) do
       clause('CURLYSTART EACHCLOSE CURLYEND') { |_,_,_| }
+    end
+
+    production(:context_bl_start) do
+      clause('CURLYSTART WITH IDENT CURLYEND') { |_,_,e,_| Component.new(e) }
+    end
+
+    production(:context_bl_end) do
+      clause('CURLYSTART WITHCLOSE CURLYEND') { |_,_,_| }
     end
 
     production(:else) do

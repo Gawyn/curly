@@ -31,6 +31,13 @@ describe Curly::Lexer, ".lex" do
     map_lex_type("foo\n").should == [:OUT, :EOS]
   end
 
+  it "scans context block tags with the with syntax" do
+    map_lex_type('{{#with bar}} hello {{/with}}').should == [
+      :CURLYSTART, :WITH, :IDENT, :CURLYEND,
+      :OUT, :CURLYSTART, :WITHCLOSE, :CURLYEND, :EOS
+    ]
+  end
+
   it "scans conditional block tags with the if syntax" do
     map_lex_type('foo {{#if bar?}} hello {{/if}}').should == [
       :OUT, :CURLYSTART, :IF, :IDENT, :CURLYEND,

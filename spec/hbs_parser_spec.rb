@@ -53,6 +53,12 @@ describe Curly::HbsParser do
     subject.parse(lex).should == [collection_block(component("a"), [text("b")], [text("c")])]
   end
 
+  it "parses context blocks with with syntax" do
+    lex = Curly::Lexer.lex("{{#with a}}b{{/with}}")
+
+    subject.parse(lex).should == [context_block(component("a"), [text("b")])]
+  end
+
   def parse(template)
     described_class.parse(Curly::Lexer.lex(template))
   end
@@ -75,6 +81,10 @@ describe Curly::HbsParser do
 
   def collection_block(*args)
     Curly::HbsParser::Block.new(:collection, *args)
+  end
+
+  def context_block(*args)
+    Curly::HbsParser::Block.new(:context, *args)
   end
 
   def comment(content)

@@ -15,6 +15,10 @@ module Curly
       :IFCLOSE
     end
 
+    rule /(#[A-Za-z][\w\.]*\??)/, :expression do |name|
+      :HELPER
+    end
+
     rule /#unless\s+/, :expression do
       :UNLESS
     end
@@ -29,6 +33,14 @@ module Curly
 
     rule /\/each/, :expression do
       :EACHCLOSE
+    end
+
+    rule /#with\s+/, :expression do
+      :WITH
+    end
+
+    rule /\/with/, :expression do
+      :WITHCLOSE
     end
 
     rule /else/, :expression do
