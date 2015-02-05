@@ -32,8 +32,8 @@ module Curly
   # template - The template String that should be compiled.
   #
   # Returns a String containing the Ruby code.
-  def self.compile(template, presenter_class)
-    Compiler.compile(template, presenter_class)
+  def self.compile(template, presenter_class, mode = :curly)
+    Compiler.compile(template, presenter_class, mode)
   end
 
   # Whether the Curly template is valid. This includes whether all
@@ -49,6 +49,9 @@ module Curly
 end
 
 require 'curly/compiler'
-require 'curly/presenter'
 require 'curly/template_handler'
+require 'curly/hbs_parser'
+require 'curly/hbs_template_handler'
+require 'curly/lexer'
+require 'curly/presenter'
 require 'curly/railtie' if defined?(Rails)

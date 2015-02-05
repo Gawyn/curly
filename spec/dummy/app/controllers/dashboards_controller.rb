@@ -11,4 +11,17 @@ class DashboardsController < ApplicationController
   def new
     @name = "test"
   end
+
+  def conditionals
+    @name = "test"
+  end
+
+  def hbs_conditionals
+    @name = "test"
+  end
+
+  def hbs_collection
+    @name = "numbers"
+    @items = ["uno", "dos", "tres!"]
+  end
 end

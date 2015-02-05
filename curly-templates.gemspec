@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
 
   s.add_dependency("actionpack", [">= 3.1", "< 5.0"])
+  s.add_dependency 'rltk', '~> 2.2.0'
 
   s.add_development_dependency("railties", [">= 3.1", "< 5.0"])
   s.add_development_dependency("rake")
@@ -43,9 +44,12 @@ Gem::Specification.new do |s|
     lib/curly/component_scanner.rb
     lib/curly/dependency_tracker.rb
     lib/curly/error.rb
+    lib/curly/hbs_parser.rb
+    lib/curly/hbs_template_handler.rb
     lib/curly/incomplete_block_error.rb
     lib/curly/incorrect_ending_error.rb
     lib/curly/invalid_component.rb
+    lib/curly/lexer.rb
     lib/curly/parser.rb
     lib/curly/presenter.rb
     lib/curly/presenter_not_found.rb
@@ -71,6 +75,10 @@ Gem::Specification.new do |s|
     spec/dummy/app/controllers/dashboards_controller.rb
     spec/dummy/app/helpers/application_helper.rb
     spec/dummy/app/presenters/dashboards/collection_presenter.rb
+    spec/dummy/app/presenters/dashboards/conditionals_presenter.rb
+    spec/dummy/app/presenters/dashboards/empty_object_presenter.rb
+    spec/dummy/app/presenters/dashboards/hbs_collection_presenter.rb
+    spec/dummy/app/presenters/dashboards/hbs_conditionals_presenter.rb
     spec/dummy/app/presenters/dashboards/item_presenter.rb
     spec/dummy/app/presenters/dashboards/new_presenter.rb
     spec/dummy/app/presenters/dashboards/partials_presenter.rb
@@ -78,6 +86,9 @@ Gem::Specification.new do |s|
     spec/dummy/app/presenters/layouts/application_presenter.rb
     spec/dummy/app/views/dashboards/_item.html.curly
     spec/dummy/app/views/dashboards/collection.html.curly
+    spec/dummy/app/views/dashboards/conditionals.html.curly
+    spec/dummy/app/views/dashboards/hbs_collection.html.hbs
+    spec/dummy/app/views/dashboards/hbs_conditionals.html.hbs
     spec/dummy/app/views/dashboards/new.html.curly
     spec/dummy/app/views/dashboards/partials.html.curly
     spec/dummy/app/views/dashboards/show.html.curly
@@ -89,10 +100,15 @@ Gem::Specification.new do |s|
     spec/dummy/config/environments/test.rb
     spec/dummy/config/routes.rb
     spec/generators/controller_generator_spec.rb
+    spec/hbs_parser_spec.rb
     spec/integration/application_layout_spec.rb
     spec/integration/collection_blocks_spec.rb
+    spec/integration/conditionals_spec.rb
+    spec/integration/hbs_collection_blocks_spec.rb
+    spec/integration/hbs_conditionals_spec.rb
     spec/integration/context_blocks_spec.rb
     spec/integration/partials_spec.rb
+    spec/lexer_spec.rb
     spec/matchers/have_structure.rb
     spec/parser_spec.rb
     spec/presenter_spec.rb

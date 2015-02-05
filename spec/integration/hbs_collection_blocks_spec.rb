@@ -1,6 +1,6 @@
 describe "Collection blocks", type: :request do
   example "Rendering collections" do
-    get '/collection'
+    get '/hbs-collection'
 
     response.body.should == <<-HTML.strip_heredoc
       <html>

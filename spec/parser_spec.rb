@@ -21,6 +21,18 @@ describe Curly::Parser do
     ]
   end
 
+  it "parses conditional blocks with the if syntax" do
+    tokens = [
+      [:conditional_block_start, "a?", nil, {}],
+      [:component, "hello", nil, {}],
+      [:conditional_block_end, nil, nil],
+    ]
+
+    parse(tokens).should == [
+      conditional_block(component("a?"), [component("hello")])
+    ]
+  end
+
   it "parses inverse conditional blocks" do
     tokens = [
       [:inverse_conditional_block_start, "a?", nil, {}],
@@ -30,6 +42,34 @@ describe Curly::Parser do
 
     parse(tokens).should == [
       inverse_conditional_block(component("a?"), [component("hello")])
+    ]
+  end
+
+  it "parses elses in conditionals" do
+    tokens = [
+      [:conditional_block_start, "bar?", nil, {}],
+      [:component, "hello", nil, {}],
+      [:else_block_start, "bar?", nil, {}],
+      [:component, "bye", nil, {}],
+      [:block_end, "bar?", nil],
+    ]
+
+    parse(tokens).should == [
+      conditional_block(component("bar?"), [component("hello")], [component("bye")])
+    ]
+  end
+
+  it "parses elses in inverse conditionals" do
+    tokens = [
+      [:inverse_conditional_block_start, "bar?", nil, {}],
+      [:component, "hello", nil, {}],
+      [:else_block_start, "bar?", nil, {}],
+      [:component, "bye", nil, {}],
+      [:block_end, "bar?", nil],
+    ]
+
+    parse(tokens).should == [
+      inverse_conditional_block(component("bar?"), [component("hello")], [component("bye")])
     ]
   end
 
@@ -45,6 +85,42 @@ describe Curly::Parser do
     ]
   end
 
+  it "parses collection blocks with the each syntax" do
+    tokens = [
+      [:collection_block_start, "mice", nil, {}],
+      [:component, "hello", nil, {}],
+      [:collection_block_end, nil, nil],
+    ]
+
+    parse(tokens).should == [
+      collection_block(component("mice"), [component("hello")])
+    ]
+  end
+
+  it "parses contexts block" do
+    tokens = [
+      [:context_block_start, "search_form", nil, {}],
+      [:component, "query_field", nil, {}],
+      [:block_end, "search_form", nil]
+    ]
+
+    parse(tokens).should == [
+      context_block(component("search_form"), [component("query_field")])
+    ]
+  end
+
+  it "parses context blocks with dots" do
+    tokens = [
+      [:context_block_start, "search", "form", {}],
+      [:component, "query_field", nil, {}],
+      [:block_end, "search", "form"]
+    ]
+
+    parse(tokens).should == [
+      context_block(component("search", "form"), [component("query_field")])
+    ]
+  end
+
   it "fails if a block is not closed" do
     tokens = [
       [:collection_block_start, "mice", nil, {}],
@@ -57,6 +133,15 @@ describe Curly::Parser do
     tokens = [
       [:collection_block_start, "mice", nil, {}],
       [:block_end, "men", nil, {}],
+    ]
+
+    expect { parse(tokens) }.to raise_exception(Curly::IncorrectEndingError)
+  end
+
+  it "fails if a conditional-type block is closed with the wrong component" do
+    tokens = [
+      [:inverse_conditional_block_start, "mice", nil, {}],
+      [:conditional_block_end, nil, nil],
     ]
 
     expect { parse(tokens) }.to raise_exception(Curly::IncorrectEndingError)
@@ -88,5 +173,9 @@ describe Curly::Parser do
 
   def collection_block(*args)
     Curly::Parser::Block.new(:collection, *args)
+  end
+
+  def context_block(*args)
+    Curly::Parser::Block.new(:context, *args)
   end
 end

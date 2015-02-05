@@ -23,13 +23,15 @@ module Curly
     #   correct order - the most recent block must be ended first.
     # Raises IncompleteBlockError if a block is not completed.
     # Returns a String containing the Ruby code.
-    def self.compile(template, presenter_class)
+    def self.compile(template, presenter_class, mode = :curly)
+      @mode = mode
+
       if presenter_class.nil?
         raise ArgumentError, "presenter class cannot be nil"
       end
 
-      tokens = Scanner.scan(template)
-      nodes = Parser.parse(tokens)
+      tokens = scanner_class.scan(template)
+      nodes = parser_class.parse(tokens)
 
       compiler = new(presenter_class)
       compiler.compile(nodes)
@@ -75,6 +77,14 @@ module Curly
 
     private
 
+    def self.scanner_class
+      @mode == :hbs ? Lexer : Scanner
+    end
+
+    def self.parser_class
+      @mode == :hbs ? HbsParser : Parser
+    end
+
     def presenter_class
       @presenter_classes.last
     end
@@ -105,13 +115,27 @@ module Curly
         presenters << presenter
         options_stack << options
         items = Array(#{method_call})
-        items.each_with_index do |item, index|
-          options = options.merge("#{name}" => item, "#{counter}" => index + 1)
-          presenter = #{item_presenter_class}.new(self, options)
+        if items.any?
+          items.each_with_index do |item, index|
+            options = options.merge("#{name}" => item, "#{counter}" => index + 1)
+            presenter = #{item_presenter_class}.new(self, options)
       RUBY
 
       @presenter_classes.push(item_presenter_class)
       compile(block.nodes)
+      
+      output <<-RUBY
+        end
+      RUBY
+
+      if block.inverse_nodes.any?
+        output <<-RUBY
+          else
+        RUBY
+
+        compile(block.inverse_nodes)
+      end
+
       @presenter_classes.pop
 
       output <<-RUBY
@@ -134,6 +158,14 @@ module Curly
       RUBY
 
       compile(block.nodes)
+
+      if block.inverse_nodes.any?
+        output <<-RUBY
+          else
+        RUBY
+
+        compile(block.inverse_nodes)
+      end
 
       output <<-RUBY
         end

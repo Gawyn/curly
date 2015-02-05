@@ -1,10 +1,10 @@
 <ul>
-{{*items}}
+{{#each items}}
   <li>{{item}}</li>
   <ul>
-    {{*subitems}}<li>{{name}}</li>{{/subitems}}
+    {{#each subitems}}<li>{{name}}</li>{{/each}}
   </ul>
-{{/items}}
+{{/each}}
 </ul>
 {{#each empty_objects}}
 {{else}}
