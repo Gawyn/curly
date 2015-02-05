@@ -87,8 +87,8 @@ Gem::Specification.new do |s|
     spec/dummy/app/views/dashboards/_item.html.curly
     spec/dummy/app/views/dashboards/collection.html.curly
     spec/dummy/app/views/dashboards/conditionals.html.curly
-    spec/dummy/app/views/dashboards/hbs_collection.html.curly
-    spec/dummy/app/views/dashboards/hbs_conditionals.html.curly
+    spec/dummy/app/views/dashboards/hbs_collection.html.hbs
+    spec/dummy/app/views/dashboards/hbs_conditionals.html.hbs
     spec/dummy/app/views/dashboards/new.html.curly
     spec/dummy/app/views/dashboards/partials.html.curly
     spec/dummy/app/views/dashboards/show.html.curly
