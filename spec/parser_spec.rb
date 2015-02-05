@@ -97,6 +97,30 @@ describe Curly::Parser do
     ]
   end
 
+  it "parses contexts block" do
+    tokens = [
+      [:context_block_start, "search_form", nil, {}],
+      [:component, "query_field", nil, {}],
+      [:block_end, "search_form", nil]
+    ]
+
+    parse(tokens).should == [
+      context_block(component("search_form"), [component("query_field")])
+    ]
+  end
+
+  it "parses context blocks with dots" do
+    tokens = [
+      [:context_block_start, "search", "form", {}],
+      [:component, "query_field", nil, {}],
+      [:block_end, "search", "form"]
+    ]
+
+    parse(tokens).should == [
+      context_block(component("search", "form"), [component("query_field")])
+    ]
+  end
+
   it "fails if a block is not closed" do
     tokens = [
       [:collection_block_start, "mice", nil, {}],
@@ -149,5 +173,9 @@ describe Curly::Parser do
 
   def collection_block(*args)
     Curly::Parser::Block.new(:collection, *args)
+  end
+
+  def context_block(*args)
+    Curly::Parser::Block.new(:context, *args)
   end
 end

@@ -59,6 +59,14 @@ describe Curly::Scanner, ".scan" do
     ]
   end
 
+  it "scans context block tags with dots" do
+    scan('{{@search.form}}{{query_field}}{{/search.form}}').should == [
+      [:context_block_start, "search", "form", {}],
+      [:component, "query_field", nil, {}],
+      [:block_end, "search", "form"]
+    ]
+  end
+
   it "scans conditional block tags" do
     scan('foo {{#bar?}} hello {{/bar?}}').should == [
       [:text, "foo "],
