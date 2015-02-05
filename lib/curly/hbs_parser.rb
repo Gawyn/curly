@@ -28,11 +28,18 @@ module Curly
     end
 
     production(:expression) do
-      clause('CURLYSTART object CURLYEND') { |_,e,_| Component.new(e) }
+      clause('CURLYSTART object CURLYEND') { |_,e,_| e }
     end
 
     production(:object) do
-      clause('IDENT') { |e| e }
+      clause('IDENT') do |e| 
+        if e.include? "."
+          splitted = e.split(".")
+          Component.new(splitted.first, splitted[1..-1].join("."))
+        else
+          Component.new(e)
+        end
+      end
     end
 
     production(:block_expression) do
@@ -49,7 +56,7 @@ module Curly
     end
 
     production(:cond_bl_start) do
-      clause('CURLYSTART IF IDENT CURLYEND') { |_,_,e,_| Component.new(e) }
+      clause('CURLYSTART IF object CURLYEND') { |_,_,e,_| e }
     end
 
     production(:cond_bl_end) do
@@ -57,7 +64,7 @@ module Curly
     end
 
     production(:inv_cond_bl_start) do
-      clause('CURLYSTART UNLESS IDENT CURLYEND') { |_,_,e,_| Component.new(e) }
+      clause('CURLYSTART UNLESS object CURLYEND') { |_,_,e,_| e }
     end
 
     production(:inv_cond_bl_end) do
@@ -65,7 +72,7 @@ module Curly
     end
 
     production(:col_bl_start) do
-      clause('CURLYSTART EACH IDENT CURLYEND') { |_,_,e,_| Component.new(e) }
+      clause('CURLYSTART EACH object CURLYEND') { |_,_,e,_| e }
     end
 
     production(:col_bl_end) do
@@ -73,7 +80,7 @@ module Curly
     end
 
     production(:context_bl_start) do
-      clause('CURLYSTART WITH IDENT CURLYEND') { |_,_,e,_| Component.new(e) }
+      clause('CURLYSTART WITH object CURLYEND') { |_,_,e,_| e }
     end
 
     production(:context_bl_end) do

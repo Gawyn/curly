@@ -59,6 +59,12 @@ describe Curly::HbsParser do
     subject.parse(lex).should == [context_block(component("a"), [text("b")])]
   end
 
+  it "parses context blocks with with syntax and dots" do
+    lex = Curly::Lexer.lex("{{#with a.b}}c{{/with}}")
+
+    subject.parse(lex).should == [context_block(component("a", "b"), [text("c")])]
+  end
+
   def parse(template)
     described_class.parse(Curly::Lexer.lex(template))
   end
